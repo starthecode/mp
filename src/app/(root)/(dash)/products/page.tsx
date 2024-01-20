@@ -125,7 +125,7 @@ export default async function Products() {
 
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                     {users &&
-                      users?.map((user: any, index) => (
+                      users?.map((user: any, index: string) => (
                         <tr key={index}>
                           <td className="h-px w-px whitespace-nowrap">
                             <div className="ps-6 py-3">
@@ -196,15 +196,7 @@ export default async function Products() {
                                 <span className="text-xs text-gray-500">
                                   2/5
                                 </span>
-                                <div className="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700">
-                                  <div
-                                    className="flex flex-col justify-center overflow-hidden bg-gray-800 dark:bg-gray-200"
-                                    role="progressbar"
-                                    aria-valuenow="40"
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                  ></div>
-                                </div>
+                                <div className="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700"></div>
                               </div>
                             </div>
                           </td>
