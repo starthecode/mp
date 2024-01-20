@@ -1,5 +1,5 @@
 'use client';
-import { CreateOrderParams, IOrder, IProduct } from '@/types';
+import { CreateOrderParams, IOrder, IProduct, productDetails } from '@/types';
 import { useSession } from 'next-auth/react';
 
 import React from 'react';
@@ -7,7 +7,11 @@ import LoginComponent from '../LoginComponent';
 import { createOrder, getOrder } from '@/libs/actions/order.action';
 import Checkout from '../Checkout';
 
-export default function ShopSidebar({ extraDetails }: IOrder) {
+interface ShopSidebarProps {
+  extraDetails: productDetails;
+}
+
+export default function ShopSidebar(extraDetails: ShopSidebarProps) {
   const [downloadStart, setDownloadStart] = React.useState<Boolean>(false);
   const [orderDetails, setOrderdetails] = React.useState<{
     id: string;
@@ -32,7 +36,7 @@ export default function ShopSidebar({ extraDetails }: IOrder) {
 
   async function handleOrder() {
     setDownloadStart(true);
-    const orderData = await getOrder(extraDetails?.id as any);
+    const orderData = await getOrder(extraDetails?.id as string);
     let orderId = '';
     let updateDownloadNum = 0;
     if (orderData) {
@@ -128,11 +132,7 @@ export default function ShopSidebar({ extraDetails }: IOrder) {
             </div>
 
             <div className="flex-shrink-0 relative rounded-lg overflow-hidden w-20 h-20">
-              <img
-                className="w-full h-full absolute top-0 start-0 object-cover rounded-lg"
-                src="https://images.unsplash.com/photo-1567016526105-22da7c13161a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                alt="Image Description"
-              />
+              img
             </div>
           </a>
 
@@ -145,11 +145,7 @@ export default function ShopSidebar({ extraDetails }: IOrder) {
             </div>
 
             <div className="flex-shrink-0 relative rounded-lg overflow-hidden w-20 h-20">
-              <img
-                className="w-full h-full absolute top-0 start-0 object-cover rounded-lg"
-                src="https://images.unsplash.com/photo-1542125387-c71274d94f0a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                alt="Image Description"
-              />
+              img
             </div>
           </a>
 
@@ -161,11 +157,7 @@ export default function ShopSidebar({ extraDetails }: IOrder) {
             </div>
 
             <div className="flex-shrink-0 relative rounded-lg overflow-hidden w-20 h-20">
-              <img
-                className="w-full h-full absolute top-0 start-0 object-cover rounded-lg"
-                src="https://images.unsplash.com/photo-1586232702178-f044c5f4d4b7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                alt="Image Description"
-              />
+              img
             </div>
           </a>
         </div>

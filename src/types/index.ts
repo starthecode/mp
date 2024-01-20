@@ -163,6 +163,26 @@ export type SearchParamProps = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
+type Category = {
+  id: string;
+  name: string;
+};
+
+export interface productDetails extends Document {
+  id: string;
+  title: string;
+  desc: string;
+  imageUrl: string;
+  downloadLink: string;
+  price: string;
+  isFree: boolean;
+  url: string;
+  createdAt: string;
+  updatedAt: string;
+  categoryId: string;
+  category: Category;
+}
+
 //interfaces
 
 export interface IProduct extends Document {
@@ -205,10 +225,10 @@ export interface IOrder extends Document {
   productId: string;
   totalAmount: number;
   numOfDownload: number;
-  createdAt: string;
-  user: {
-    email: string;
-  };
+  // createdAt: string;
+  // user: {
+  //   email: string;
+  // };
 }
 
 // export interface IUser extends Document {
