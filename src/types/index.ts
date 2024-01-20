@@ -177,8 +177,8 @@ export interface productDetails extends Document {
   price: string;
   isFree: boolean;
   url: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   categoryId: string;
   category: Category;
 }

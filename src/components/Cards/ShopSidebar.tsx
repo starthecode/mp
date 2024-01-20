@@ -11,12 +11,12 @@ interface ShopSidebarProps {
   extraDetails: productDetails;
 }
 
-export default function ShopSidebar(extraDetails: ShopSidebarProps) {
+export default function ShopSidebar({ extraDetails }: ShopSidebarProps) {
   const [downloadStart, setDownloadStart] = React.useState<Boolean>(false);
   const [orderDetails, setOrderdetails] = React.useState<{
     id: string;
     numOfDownload: number;
-  }>({});
+  }>();
   const { data: session } = useSession();
 
   const order: CreateOrderParams = {
@@ -116,7 +116,10 @@ export default function ShopSidebar(extraDetails: ShopSidebarProps) {
                     {downloadText}
                   </button>
                 ) : (
-                  <Checkout product={extraDetails} userId={session?.user?.id} />
+                  <Checkout
+                    product={extraDetails}
+                    userId={session?.user?.id as string}
+                  />
                 )}
               </div>
             </div>
