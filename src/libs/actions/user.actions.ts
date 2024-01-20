@@ -35,7 +35,7 @@ export const getUserById = async (id: string) => {
       select: {
         id: true,
         email: true,
-        role: true,
+        roles: true,
       },
     });
 

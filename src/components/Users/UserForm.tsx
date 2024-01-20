@@ -14,7 +14,7 @@ import { updateUser } from '@/libs/actions/user.actions';
 import MultiSelect from '../MultiSelect';
 
 interface FormData {
-  selectedOptions: string[];
+  selectedOptions: { value: string }[];
 }
 
 const options = [
