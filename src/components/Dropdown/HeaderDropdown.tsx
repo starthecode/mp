@@ -33,8 +33,6 @@ export default function HeaderDropdown({ data }: any) {
     });
   }
 
-  console.log(showDropdown);
-
   return (
     <>
       <div className="flex gap-2 items-center">
@@ -66,13 +64,15 @@ export default function HeaderDropdown({ data }: any) {
             <h3>Welcome {data?.user?.name.split(' ')[0]}</h3>
           </div>
           <div className="img-box bg-slate-300">
-            <Image
-              className="p-1 rounded-full"
-              fill
-              sizes="(max-width: 40px) 100vw, 33vw"
-              src={data?.user?.image}
-              alt={data?.user?.name}
-            />
+            {!!data?.user?.image && (
+              <Image
+                src={data?.user?.image}
+                className="p-1 rounded-full"
+                fill
+                sizes="(max-width: 40px) 100vw, 33vw"
+                alt="profile logo"
+              />
+            )}
           </div>
         </div>
         {showDropdown && (

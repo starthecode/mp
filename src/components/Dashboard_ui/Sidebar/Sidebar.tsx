@@ -105,7 +105,7 @@ export default function Sidebar() {
               src="/assets/imgs/application-logo.png"
               width={25}
               height={25}
-              alt={'logo'}
+              alt='logo'
               className="w-auto h-auto"
             />
             Experimental App

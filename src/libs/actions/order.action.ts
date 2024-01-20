@@ -48,10 +48,6 @@ export const createOrder = async (
   numOfDownload: number,
   order: CreateOrderParams
 ) => {
-  console.log(order);
-
-  return false;
-
   try {
     if (!id) {
       const newOrder = await prisma.order.create({ data: order });

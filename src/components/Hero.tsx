@@ -10,7 +10,7 @@ export default function Hero() {
           examples, using pre-built UI parts, custom components and layouts
           using Tailwind CSS.
         </p>
-        <SearchBarContainer />
+        {/* <SearchBarContainer /> */}
       </div>
     </section>
   );

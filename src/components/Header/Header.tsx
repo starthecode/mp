@@ -20,7 +20,7 @@ export default async function Header() {
               src="/assets/imgs/application-logo.png"
               width={30}
               height={30}
-              alt={'logo'}
+              alt="logo"
               className="w-auto h-auto"
             />
             Experimental App

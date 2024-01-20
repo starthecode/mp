@@ -150,7 +150,7 @@ export default async function Products() {
                                   height={20}
                                   className="inline-block w-auto h-auto rounded-full bg-gray-300 p-1"
                                   src={user?.image}
-                                  alt="Image Description"
+                                  alt="Image"
                                 />
                                 <div className="grow">
                                   <span className="block text-sm font-semibold text-gray-800 dark:text-gray-200">
