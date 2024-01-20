@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// enum Role {
+//   USER
+//   ADMIN
+// }
+
+model User {
+id String @id @default(auto()) @map("_id") @db.ObjectId
+name String
+email String @unique
+emailVerified DateTime?
+phone String?
+image String?
+roles String[]  @default(["user"])
+address Json?
+createdAt DateTime @default(now())
+updateAt DateTime @updatedAt
+accounts Account[]
+orders Order[]
+
+}
+
+
+model Account {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  provider String
+  type String
+  providerAccountId String
+  token_type String?
+  scope String?
+  expires_at Int?
+  ext_expires_in Int?
+  refresh_token String? @db.String
+  access_token String? @db.String
+  id_token String? @db.String
+  session_state String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+
+model Product {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  desc String
+  imageUrl String
+  downloadLink String
+  price String?
+  isFree Boolean
+  url String
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  categoryId String @db.ObjectId
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  orders Order[]
+}
+
+
+model Category {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+
+  products Product[]
+}
+
+
+
+model Order {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  productId String @db.ObjectId @unique
+  totalAmount String?
+  numOfDownload Int
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+
+
+// export type IOrderItem = {
+//   _id: string;
+//   totalAmount: string;
+//   createdAt: Date;
+//   eventTitle: string;
+//   eventId: string;
+//   buyer: string;
+// };
+
+// const OrderSchema = new Schema({
+//   createdAt: {
+//     type: Date,
+//     default: Date.now,
+//   },
+//   stripeId: {
+//     type: String,
+//     required: true,
+//     unique: true,
+//   },
+//   totalAmount: {
+//     type: String,
+//   },
+//   event: {
+//     type: Schema.Types.ObjectId,
+//     ref: 'Event',
+//   },
+//   buyer: {
+//     type: Schema.Types.ObjectId,
+//     ref: 'User',
+//   },
+// });
