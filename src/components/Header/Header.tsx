@@ -6,6 +6,7 @@ import { getServerSession } from 'next-auth';
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
+
   return (
     <header className="flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full text-sm py-3 md:py-0">
       <nav className=" w-full mx-auto px-4 md:px-6 lg:px-8" aria-label="Global">

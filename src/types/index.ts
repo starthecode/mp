@@ -2,13 +2,11 @@ import { Document } from 'mongodb';
 
 // ====== USER PARAMS
 export type UserSessionParams = {
-  session: {
-    id: string;
-    name: string;
-    email: string;
-    image: string;
-    role: string;
-  };
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+  role: string;
 };
 
 // ====== USER PARAMS

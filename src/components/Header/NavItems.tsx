@@ -4,9 +4,8 @@ import { headerLinks } from '@/constants';
 import Link from 'next/link';
 import React from 'react';
 import RightSide from './RightSide';
-import { UserSessionParams } from '@/types';
 
-export default function NavItems({ session }: UserSessionParams) {
+export default function NavItems({ session }: any) {
   const [active, setActive] = React.useState(false);
 
   function handleClick() {
