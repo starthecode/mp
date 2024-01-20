@@ -1,6 +1,6 @@
 import stripe from 'stripe';
 import { NextResponse } from 'next/server';
-import { createOrder } from '../../../../lib/actions/order.action';
+import { createOrder, getOrder } from '@/libs/actions/order.action';
 
 export async function POST(request: Request) {
   const body = await request.text();
@@ -25,13 +25,22 @@ export async function POST(request: Request) {
 
     const order = {
       stripeId: id,
-      eventId: metadata?.eventId || '',
+      productId: metadata?.productId || '',
       buyerId: metadata?.buyerId || '',
       totalAmount: amount_total ? (amount_total / 100).toString() : '0',
       createdAt: new Date(),
     };
 
-    const newOrder = await createOrder(order);
+    const orderData = await getOrder(id as any);
+    let orderId = '';
+    let updateDownloadNum = 0;
+    if (orderData) {
+      orderId = orderData?.id as string;
+
+      updateDownloadNum = orderData?.numOfDownload + 1;
+    }
+
+    const newOrder = await createOrder(orderId, updateDownloadNum, order);
     return NextResponse.json({ message: 'OK', order: newOrder });
   }
 
