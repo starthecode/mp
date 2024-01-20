@@ -73,8 +73,8 @@ export const ProfileLinks = [
 export const productDefaultValues = {
   title: '',
   desc: '',
-  imageUrl: '',
-  downloadLink: '',
+  imageUrl: '' as any,
+  downloadLink: '' as any,
   categoryId: '',
   price: '',
   isFree: false,

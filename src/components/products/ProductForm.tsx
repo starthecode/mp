@@ -185,7 +185,7 @@ export default function ProductForm({ type, product }: ProducFormProps) {
                         <Controller
                           name="imageUrl"
                           control={control}
-                          defaultValue="" // Set the default value if needed
+                          defaultValue={undefined} // Set the default value if needed
                           render={({ field: { onChange, value, ...rest } }) => (
                             <input
                               type="file"
@@ -342,7 +342,7 @@ export default function ProductForm({ type, product }: ProducFormProps) {
                   <Controller
                     name="downloadLink"
                     control={control}
-                    defaultValue="" // Set the default value if needed
+                    defaultValue={undefined} // Set the default value if needed
                     render={({ field: { onChange, value, ...rest } }) => (
                       <input
                         type="file"

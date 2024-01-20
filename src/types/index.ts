@@ -117,7 +117,7 @@ export type CreateCategoryParams = {
 export type CheckoutOrderParams = {
   productTitle: string;
   productId: string;
-  price: number;
+  price: string;
   isFree: boolean;
   buyerId: string;
 };

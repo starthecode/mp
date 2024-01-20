@@ -18,7 +18,7 @@ export default function Checkout({
     const order = {
       productTitle: product.title,
       productId: product.id,
-      price: product?.price as number,
+      price: product?.price as string,
       isFree: product.isFree,
       buyerId: userId,
     };
