@@ -40,8 +40,8 @@ export async function POST(request: Request) {
       updateDownloadNum = orderData?.numOfDownload + 1;
     }
 
-    const newOrder = await createOrder(orderId, updateDownloadNum, order);
-    return NextResponse.json({ message: 'OK', order: newOrder });
+    // const newOrder = await createOrder(orderId, updateDownloadNum, order);
+    // return NextResponse.json({ message: 'OK', order: newOrder });
   }
 
   return new Response('', { status: 200 });
