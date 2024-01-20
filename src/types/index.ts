@@ -33,8 +33,8 @@ export type AddProductParams = {
   data: {
     title: string;
     desc: string;
-    imageUrl?: string;
-    downloadLink?: string;
+    imageUrl: any;
+    downloadLink: any;
     categoryId: string;
     price?: string;
     isFree: boolean;
@@ -172,7 +172,7 @@ export interface IProduct extends Document {
   createdAt: Date;
   imageUrl: any;
   downloadLink: any;
-  price?: string | number;
+  price?: string;
   isFree: boolean;
   url: string;
   categoryId: string;

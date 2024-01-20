@@ -12,9 +12,14 @@ export const productFormSchema = z.object({
     .string()
     .min(50, { message: 'Description must be at least 3 characters.' })
     .max(1000, { message: 'Description must be at less than 400 characters.' }),
-  imageUrl: z.any(),
+  imageUrl: z.instanceof(File).refine((value) => value instanceof File, {
+    message: 'imageUrl is required and must be a File',
+  }),
   downloadLink: z
-    .any()
+    .instanceof(File)
+    .refine((value) => value instanceof File, {
+      message: 'imageUrl is required and must be a File',
+    })
     .refine((file) => (file ? true : false), 'Download file required.')
     .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 2MB.`)
     .refine(
