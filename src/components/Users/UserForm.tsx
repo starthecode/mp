@@ -1,8 +1,7 @@
 'use client';
 import React from 'react';
-import Select, { Options } from 'react-select';
 
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { userDefaultValues } from '@/constants';
@@ -13,7 +12,7 @@ import toast from 'react-hot-toast';
 import { updateUser } from '@/libs/actions/user.actions';
 import MultiSelect from '../MultiSelect';
 
-interface FormData {
+interface userDataProps {
   selectedOptions: { value: string }[];
 }
 
@@ -59,7 +58,7 @@ export default function UserForm({ type, user, userId }: UserFormProps) {
 
   const onInvalid = (errors: any) => console.error(errors);
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: userDataProps) {
     //Create
     if (type === 'Update') {
       const updatedUser = await updateUser({
