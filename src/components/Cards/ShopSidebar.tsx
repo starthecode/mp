@@ -6,6 +6,8 @@ import React from 'react';
 import LoginComponent from '../LoginComponent';
 import { createOrder, getOrder } from '@/libs/actions/order.action';
 import Checkout from '../Checkout';
+import { genDownloadUrl } from '@/libs/utils';
+import { usePathname } from 'next/navigation';
 
 interface ShopSidebarProps {
   extraDetails: productDetails;
@@ -13,54 +15,44 @@ interface ShopSidebarProps {
 
 export default function ShopSidebar({ extraDetails }: ShopSidebarProps) {
   const [downloadStart, setDownloadStart] = React.useState<Boolean>(false);
-  const [orderDetails, setOrderdetails] = React.useState<{
-    id: string;
-    numOfDownload: number;
-  }>();
+  const [orderData, setOrderData] = React.useState<IProduct | null>(null);
+  const pathName = usePathname();
   const { data: session } = useSession();
 
   const order: CreateOrderParams = {
     userId: session?.user.id || '',
     productId: extraDetails?.id,
     totalAmount: extraDetails?.price ? extraDetails?.price : 'free',
-    numOfDownload: 1,
   };
 
-  // React.useEffect(() => {
-  //   const getOrderdata = async () => {
+  React.useEffect(() => {
+    const fetchOrderData = async () => {
+      const data = await getOrder(order);
+      setOrderData(data);
+    };
 
-  //   };
-
-  //   getOrderdata();
-  // }, [extraDetails?.id]);
+    fetchOrderData();
+  }, [extraDetails?.id]);
 
   async function handleOrder() {
     setDownloadStart(true);
-    const orderData = await getOrder(extraDetails?.id as string);
-    let orderId = '';
-    let updateDownloadNum = 0;
-    if (orderData) {
-      orderId = orderData?.id as string;
-
-      updateDownloadNum = orderData?.numOfDownload + order.numOfDownload;
-    }
-
-    try {
-      const newOrder = await createOrder(orderId, updateDownloadNum, order);
-      if (newOrder) {
-        const downloadLink = extraDetails?.downloadLink;
-        if (downloadLink) {
-          const anchor = document.createElement('a');
-          anchor.href = downloadLink;
-          anchor.download = ''; // Optional: set the default download filename
-          document.body.appendChild(anchor);
-          anchor.click();
-          document.body.removeChild(anchor);
+    // const orderData = await getOrder(extraDetails?.id as string);
+    if (
+      orderData?.userId === session?.user.id &&
+      orderData?.productId === extraDetails?.id
+    ) {
+      genDownloadUrl(extraDetails?.downloadLink);
+      setDownloadStart(false);
+    } else {
+      try {
+        const newOrder = await createOrder(order);
+        if (newOrder) {
+          genDownloadUrl(extraDetails?.downloadLink);
+          setDownloadStart(false);
         }
-        setDownloadStart(false);
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   }
 
@@ -117,6 +109,8 @@ export default function ShopSidebar({ extraDetails }: ShopSidebarProps) {
                   </button>
                 ) : (
                   <Checkout
+                    pathName={pathName}
+                    transactionId={orderData?.transactionId}
                     product={extraDetails}
                     userId={session?.user?.id as string}
                   />
@@ -124,45 +118,6 @@ export default function ShopSidebar({ extraDetails }: ShopSidebarProps) {
               </div>
             </div>
           )}
-        </div>
-
-        <div className="space-y-6">
-          <a className="group flex items-center gap-x-6" href="#">
-            <div className="grow">
-              <span className="text-sm font-bold text-gray-800 group-hover:text-blue-600 dark:text-gray-200 dark:group-hover:text-blue-500">
-                5 Reasons to Not start a UX Designer Career in 2022/2023
-              </span>
-            </div>
-
-            <div className="flex-shrink-0 relative rounded-lg overflow-hidden w-20 h-20">
-              img
-            </div>
-          </a>
-
-          <a className="group flex items-center gap-x-6" href="#">
-            <div className="grow">
-              <span className="text-sm font-bold text-gray-800 group-hover:text-blue-600 dark:text-gray-200 dark:group-hover:text-blue-500">
-                If your UX Portfolio has this 20% Well Done, it Will Give You an
-                80% Result
-              </span>
-            </div>
-
-            <div className="flex-shrink-0 relative rounded-lg overflow-hidden w-20 h-20">
-              img
-            </div>
-          </a>
-
-          <a className="group flex items-center gap-x-6" href="#">
-            <div className="grow">
-              <span className="text-sm font-bold text-gray-800 group-hover:text-blue-600 dark:text-gray-200 dark:group-hover:text-blue-500">
-                7 Principles of Icon Design
-              </span>
-            </div>
-
-            <div className="flex-shrink-0 relative rounded-lg overflow-hidden w-20 h-20">
-              img
-            </div>
-          </a>
         </div>
       </div>
     </div>

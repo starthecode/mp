@@ -3,26 +3,39 @@ import { loadStripe } from '@stripe/stripe-js';
 
 import { IProduct } from '@/types';
 import { checkoutOrder } from '@/libs/actions/order.action';
+import { genDownloadUrl, setPathName } from '@/libs/utils';
 
 export default function Checkout({
+  pathName,
+  transactionId,
   product,
   userId,
 }: {
+  pathName: string;
+  transactionId: string | undefined | null;
   product: IProduct;
   userId: string;
 }) {
   loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
   const [clientSecret, setClientSecret] = React.useState('');
 
+  const buttonText = transactionId ? 'Download' : 'Buy & Download';
+
   const onCheckout = async () => {
-    const order = {
-      productTitle: product.title,
-      productId: product.id,
-      price: product?.price as string,
-      isFree: product.isFree,
-      buyerId: userId,
-    };
-    await checkoutOrder(order);
+    if (transactionId) {
+      genDownloadUrl(product?.downloadLink);
+    } else {
+      setPathName(pathName); //set pathname in localstorage
+
+      const order = {
+        productTitle: product.title,
+        productId: product.id,
+        price: product?.price as string,
+        isFree: product.isFree,
+        buyerId: userId,
+      };
+      await checkoutOrder(order);
+    }
   };
 
   React.useEffect(() => {
@@ -62,7 +75,7 @@ export default function Checkout({
               d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
             />
           </svg>
-          Buy & Download
+          {buttonText}
         </button>
       </form>
     </>

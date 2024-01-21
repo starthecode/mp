@@ -32,3 +32,20 @@ export const handleError = (error: unknown) => {
   throw new Error(`Error adding category: ${error}`);
   // throw new Error(typeof error === 'string' ? error : JSON.stringify(error));
 };
+
+//for download link generation
+
+export function genDownloadUrl(url: string) {
+  if (url) {
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = ''; // Optional: set the default download filename
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+  }
+}
+
+export function setPathName(pathName: string) {
+  window.localStorage.setItem('path', pathName);
+}

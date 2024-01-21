@@ -121,10 +121,10 @@ export type CheckoutOrderParams = {
 };
 
 export type CreateOrderParams = {
+  transactionId?: string;
   userId: string;
   productId: string;
   totalAmount: string;
-  numOfDownload: number;
 
   // stripeId: string;
   // eventId: string;

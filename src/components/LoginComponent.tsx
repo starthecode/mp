@@ -1,4 +1,5 @@
 'use client';
+import { setPathName } from '@/libs/utils';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -6,7 +7,7 @@ export default function LoginComponent() {
   const router = useRouter();
   const pathName = usePathname();
   function submitForLogin() {
-    window.localStorage.setItem('path', pathName);
+    setPathName(pathName);
     router.push('/login');
   }
 

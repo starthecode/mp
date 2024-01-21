@@ -12,8 +12,6 @@ export default async function ProductDetails({
 
   const moreImages = false;
 
-  console.log('product details:', productDetails);
-
   return (
     <div className="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto mt-28">
       <div className="w-full flex justify-start items-start">
