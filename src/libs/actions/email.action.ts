@@ -22,7 +22,7 @@ export const sendEmail = async (type: string, data: EmailParams) => {
       //send new order details to admin
       emailData = await resend.emails.send({
         from: 'Experimental Code <info@experimentalapp.xyz>',
-        to: [`${process.env.ADMIN_EMAIL}`],
+        to: ['starthecode@gmail.com'],
         subject: mailSubject,
         react: EmailAdminTemplate() as React.ReactElement,
       });
