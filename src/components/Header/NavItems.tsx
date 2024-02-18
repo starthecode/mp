@@ -68,7 +68,7 @@ export default function NavItems({ session }: any) {
               headerLinks.map((link, index) => (
                 <Link
                   key={index}
-                  className="font-medium text-gray-500 hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                  className="font-medium text-gray-600 hover:text-violet-600 py-3 md:py-6 dark:text-gray-500 dark:hover:text-violet-600 focus:outline-none"
                   href={link.route}
                 >
                   {link.label}

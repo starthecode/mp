@@ -24,6 +24,19 @@ input {
   border: none;
 }
 
+button:disabled,
+button[disabled] {
+  @apply border-slate-200 text-slate-200;
+}
+
+.svg_css svg {
+  @apply w-5 h-5;
+}
+
+.loader_css svg {
+  @apply w-8 h-8;
+}
+
 /* profile menu */
 
 .profile {

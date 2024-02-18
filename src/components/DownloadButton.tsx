@@ -10,7 +10,7 @@ export default function DownloadButton({ dUrl }: linkProps) {
   return (
     <button
       onClick={() => genDownloadUrl(dUrl)}
-      className="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-lg border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-gray-800 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
+      className="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-lg border font-medium bg-violet-600 text-white shadow-sm align-middle hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-gray-800 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
     >
       <svg
         className="flex-shrink-0 w-4 h-4"

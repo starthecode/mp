@@ -1,27 +1,34 @@
 'use server';
 
-import { CreateUserParams, UpdateUserParams } from '@/types';
+import { CreateUserParams, UpdateUserAccount, UpdateUserParams } from '@/types';
 
 import { revalidatePath } from 'next/cache';
 import prisma from '../prismadb';
 import { NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 
 //get all Users
-export const getUsers = async () => {
-  try {
-    const users = await prisma.user.findMany();
 
-    if (!users) {
-      let error_response = {
-        status: 'fail',
-        message: 'No data Found',
-      };
-    }
-    return JSON.parse(JSON.stringify(users));
+export const getAllUsers = async ({ limit, page }: any) => {
+  try {
+    const [users, count] = await prisma.$transaction([
+      prisma.user.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.user.count({}),
+    ]);
+
+    return {
+      pagination: {
+        total: count,
+      },
+      data: users,
+    };
   } catch (error) {
-    console.error(error);
-  } finally {
-    await prisma.$disconnect();
+    console.error('Error:', error);
   }
 };
 
@@ -34,7 +41,10 @@ export const getUserById = async (id: string) => {
       },
       select: {
         id: true,
+        name: true,
         email: true,
+        username: true,
+        image: true,
         roles: true,
       },
     });
@@ -80,6 +90,29 @@ export async function updateUser({ data, id }: UpdateUserParams) {
     return JSON.parse(JSON.stringify(updatedUser));
   } catch (error) {
     console.log(error);
+  }
+}
+
+//
+export async function updateUserByAccount({ data }: UpdateUserAccount) {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: {
+        email: data?.email,
+      },
+      data: { username: data.username },
+    });
+
+    if (!updatedUser) throw new Error('User update failed');
+    return JSON.parse(JSON.stringify(updatedUser));
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      const errorResponse = {
+        error: `'prisma_error:' ${e.message}`,
+      };
+      return JSON.parse(JSON.stringify(errorResponse));
+    }
+    return JSON.parse(JSON.stringify({ error: true }));
   }
 }
 

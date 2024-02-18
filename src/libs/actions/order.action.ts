@@ -1,44 +1,8 @@
 'use server';
 
-import {
-  CheckoutOrderParams,
-  CreateOrderParams,
-  GetOrdersByEventParams,
-  GetOrdersByUserParams,
-} from '@/types';
-import { redirect } from 'next/navigation';
+import { CreateOrderParams, UpdateOrderParams } from '@/types';
+
 import prisma from '../prismadb';
-import Stripe from 'stripe';
-
-export const checkoutOrder = async (order: CheckoutOrderParams) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
-  const price = order.isFree ? 0 : Number(order.price) * 100;
-
-  const session = await stripe.checkout.sessions.create({
-    line_items: [
-      {
-        price_data: {
-          currency: 'usd',
-          unit_amount: price as number,
-          product_data: {
-            name: order.productTitle,
-          },
-        },
-        quantity: 1,
-      },
-    ],
-    metadata: {
-      productId: order.productId,
-      buyerId: order.buyerId,
-    },
-    mode: 'payment',
-    success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/downloads`,
-    cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/?canceled=true`,
-  });
-
-  redirect(session.url!);
-};
 
 export const createOrder = async (order: CreateOrderParams) => {
   try {
@@ -49,18 +13,62 @@ export const createOrder = async (order: CreateOrderParams) => {
   }
 };
 
-export const getAllOrders = async () => {
+export const updateOrder = async (
+  orderId: string,
+  orderUpdation: UpdateOrderParams
+) => {
   try {
-    const orderDetails = await prisma.order.findMany({
-      include: {
-        product: true,
-        user: true,
+    const newOrder = await prisma.order.update({
+      where: {
+        id: orderId,
       },
+      data: orderUpdation,
     });
-
-    return JSON.parse(JSON.stringify(orderDetails));
+    return JSON.parse(JSON.stringify(newOrder));
   } catch (error) {
     console.log(error);
+  }
+};
+
+// export const getAllOrders = async () => {
+//   try {
+//     const orderDetails = await prisma.order.findMany({
+//       include: {
+//         product: true,
+//         user: true,
+//       },
+//     });
+
+//     return JSON.parse(JSON.stringify(orderDetails));
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+export const getAllOrders = async ({ limit, page }: any) => {
+  try {
+    const [orders, count] = await prisma.$transaction([
+      prisma.order.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+
+        orderBy: { createdAt: 'desc' },
+        include: {
+          product: true,
+          user: true,
+        },
+      }),
+      prisma.order.count(),
+    ]);
+
+    return {
+      pagination: {
+        total: count,
+      },
+      data: orders,
+    };
+  } catch (error) {
+    console.error('Error:', error);
   }
 };
 
@@ -73,6 +81,7 @@ export const getOrder = async (order: CreateOrderParams) => {
         userId: true,
         productId: true,
         transactionId: true,
+        status: true,
         // Add any other fields you want to update here
       },
     });
@@ -88,10 +97,11 @@ export const getDownloadsByUserId = async (userId: string) => {
     const orderDetails = await prisma.order.findMany({
       where: {
         userId: userId,
+        status: 'complete',
       },
 
       include: {
-        product: true,
+        product: userId ? true : false,
       },
     });
 
@@ -106,6 +116,22 @@ export const getDownloadById = async (id: string) => {
   try {
     const orderDetails = await prisma.order.findFirst({
       where: { id },
+      include: {
+        product: true,
+        user: true,
+      },
+    });
+
+    return JSON.parse(JSON.stringify(orderDetails));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOrderDetailsById = async (id: string) => {
+  try {
+    const orderDetails = await prisma.order.findFirst({
+      where: { transactionId: id },
       include: {
         product: true,
         user: true,

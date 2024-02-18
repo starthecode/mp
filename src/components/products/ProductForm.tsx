@@ -60,19 +60,27 @@ export default function ProductForm({ type, product }: ProducFormProps) {
 
       if (product.downloadLink && product.downloadLink.name) {
         formData.append('downloadLink', product.downloadLink);
-        const fileResponse1 = await uploadFile({ formData });
-        if (fileResponse1) {
-          product.downloadLink = fileResponse1.fileName;
-          console.log(fileResponse1.fileName);
-        }
       }
 
       if (product.imageUrl && product.imageUrl.name) {
         formData.append('imageUrl', product.imageUrl);
-        const fileResponse2 = await uploadFile({ formData });
-        if (fileResponse2) {
-          product.imageUrl = fileResponse2.fileName;
-          console.log(fileResponse2.fileName);
+      }
+
+      // Upload both files simultaneously
+      const fileResponse = await uploadFile({
+        formData,
+      });
+
+      if (fileResponse) {
+        console.log(fileResponse);
+
+        // Update product object with filenames
+        if (fileResponse.imageUrl) {
+          product.imageUrl = fileResponse.imageUrl.fileName;
+        }
+
+        if (fileResponse.downloadLink) {
+          product.downloadLink = fileResponse.downloadLink.fileName;
         }
       }
 

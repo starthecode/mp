@@ -6,7 +6,17 @@ export type UserSessionParams = {
   name: string;
   email: string;
   image: string;
-  role: string;
+  roles: string[];
+};
+
+export type SessionParams = {
+  session: {
+    id: string;
+    name: string;
+    email: string;
+    image: string;
+    roles: string[];
+  };
 };
 
 // ====== USER PARAMS
@@ -23,6 +33,14 @@ export type UpdateUserParams = {
   id: string;
   data: {
     selectedOptions: { value: string }[]; // Specify the expected structure
+  };
+};
+
+export type UpdateUserAccount = {
+  data: {
+    name: string;
+    email: string;
+    username: string;
   };
 };
 
@@ -105,6 +123,21 @@ export type Event = {
     name: string;
   };
 };
+export type EmailParams = {
+  orderId: string | undefined;
+  productId: string | undefined;
+  invoiceDate: number | undefined;
+  customerName: string | undefined | null;
+  address: {
+    city: string | undefined | null;
+    country: string | undefined | null;
+  };
+  totalAmount: string | undefined;
+  status: string | undefined;
+  email: string | null | undefined;
+  subject: string;
+  message: string;
+};
 
 // ====== CATEGORY PARAMS
 export type CreateCategoryParams = {
@@ -117,7 +150,9 @@ export type CheckoutOrderParams = {
   productId: string;
   price: string;
   isFree: boolean;
-  buyerId: string;
+  userId: string;
+  userEmail: string;
+  productImg: string;
 };
 
 export type CreateOrderParams = {
@@ -125,12 +160,15 @@ export type CreateOrderParams = {
   userId: string;
   productId: string;
   totalAmount: string;
+  status?: string;
+};
 
-  // stripeId: string;
-  // eventId: string;
-  // buyerId: string;
-  // totalAmount: string;
-  // createdAt: Date;
+export type UpdateOrderParams = {
+  transactionId?: string;
+  userId: string;
+  productId: string;
+  totalAmount: string;
+  status: string;
 };
 
 export type GetOrdersByEventParams = {

@@ -33,6 +33,18 @@ export const productFormSchema = z.object({
 });
 
 export const userFormSchema = z.object({
+  name: z
+    .string()
+    .min(3, { message: 'title must be at least 5 characters.' })
+    .max(1000, { message: 'title should not more than 60 characters.' }),
+  email: z.string(),
+  username: z
+    .string()
+    .min(4, { message: 'username must be at least 4 characters.' })
+    .max(8, { message: 'username should not more than 8 characters.' }),
+});
+
+export const userAccountSchema = z.object({
   selectedOptions: z
     .array(
       z.object({
@@ -40,4 +52,15 @@ export const userFormSchema = z.object({
       })
     )
     .nonempty('Please select at least one option'),
+});
+
+export const emailSchema = z.object({
+  email: z.string().email(),
+  subject: z
+    .string()
+    .min(10, { message: 'Subject must be at least 10 characters.' }),
+  message: z
+    .string()
+    .min(3, { message: 'Message must be at least 50 characters.' })
+    .max(200, { message: 'title should not more than 300 characters.' }),
 });

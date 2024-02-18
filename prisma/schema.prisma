@@ -20,6 +20,7 @@ id String @id @default(auto()) @map("_id") @db.ObjectId
 name String
 email String @unique
 emailVerified DateTime?
+username String? @default("")
 phone String?
 image String?
 roles String[]  @default(["user"])
@@ -84,8 +85,9 @@ model Category {
 model Order {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   userId String @db.ObjectId
+  status String @default("pending")
   productId String @db.ObjectId
-  transactionId String? //Stripe Id
+  transactionId String? @default("null")
   totalAmount String?
 
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)

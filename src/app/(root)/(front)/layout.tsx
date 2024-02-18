@@ -1,4 +1,5 @@
 import Header from '@/components/Header/Header';
+import HeaderArea from '@/components/HeaderArea';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export default function FrontLayout({
@@ -19,11 +20,12 @@ export default function FrontLayout({
         {/* ------------------------------------------- */}
         {/* Page Wrapper */}
         {/* ------------------------------------------- */}
-        <div className="w-full mx-auto flex-grow">
+        <div className="w-full mx-auto flex-grow relative overflow-hidden">
           {/* ------------------------------------------- */}
           {/* Header */}
           {/* ------------------------------------------- */}
           <Header />
+          <HeaderArea />
           {/* ------------------------------------------- */}
           {/* PageContent */}
           {/* ------------------------------------------- */}

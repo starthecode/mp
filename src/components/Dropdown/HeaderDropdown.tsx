@@ -1,5 +1,6 @@
 'use client';
 import { ProfileLinks } from '@/constants';
+import { isAdmin } from '@/libs/utils';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -85,18 +86,81 @@ export default function HeaderDropdown({ data }: any) {
                 {data?.user?.email}
               </p>
             </div>
-            <ul>
-              {ProfileLinks.map((item, index) => (
-                <li key={index}>
-                  <a href={item.route}>
-                    <span
-                      dangerouslySetInnerHTML={{ __html: item.icon }}
-                    ></span>
-                    &nbsp;{item.label}
-                  </a>
+            {isAdmin(data?.user) ? (
+              <ul>
+                <li>
+                  <Link href="/dashboard">Dashboard</Link>
                 </li>
-              ))}
-            </ul>
+              </ul>
+            ) : (
+              <ul>
+                <li className="flex items-center px-2">
+                  <span>
+                    <svg
+                      className="flex-shrink-0 w-4 h-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      {' '}
+                      <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />{' '}
+                      <path d="M12 12v9" /> <path d="m8 17 4 4 4-4" />{' '}
+                    </svg>
+                  </span>
+                  <Link href={'/account/?tab=downloads'}>My Downloads</Link>
+                </li>
+                <li className="flex items-center px-2">
+                  <span>
+                    <svg
+                      className="flex-shrink-0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      {' '}
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />{' '}
+                      <circle cx="9" cy="7" r="4" />{' '}
+                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />{' '}
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />{' '}
+                    </svg>
+                  </span>
+                  <Link href={'/account/?tab=account'}>Account</Link>
+                </li>
+                <li className="flex items-center px-2">
+                  <span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      width="20"
+                      height="20"
+                    >
+                      {' '}
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
+                      />{' '}
+                    </svg>
+                  </span>
+                  <Link href={'/help'}>Help</Link>
+                </li>
+              </ul>
+            )}
 
             <button onClick={logoutHandle}>
               <svg

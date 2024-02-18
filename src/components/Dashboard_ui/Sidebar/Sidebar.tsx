@@ -1,22 +1,13 @@
 'use client';
 import { sidebarLinks } from '@/constants';
-import { IUser } from '@/types';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 export default function Sidebar() {
-  const router = useRouter();
-
   const { data: session }: any = useSession();
-
-  async function logoutHandle() {
-    await signOut({ redirect: false }).then(() => {
-      router.push('/'); // Redirect to the dashboard page after signing out
-    });
-  }
 
   // Define user roles
   const userRoles = session?.user?.roles || []; // Make sure roles are available in the session
@@ -102,10 +93,11 @@ export default function Sidebar() {
             aria-label="Brand"
           >
             <Image
+              priority
               src="/assets/imgs/application-logo.png"
               width={25}
               height={25}
-              alt='logo'
+              alt="logo"
               className="w-auto h-auto"
             />
             Experimental App
@@ -120,7 +112,7 @@ export default function Sidebar() {
             {filteredSidebarLinks.map((item, index) => (
               <li key={index}>
                 <Link
-                  className="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                  className="w-full flex items-center gap-x-3.5 py-4 px-2.5 text-sm text-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 dark:text-slate-400 dark:hover:text-slate-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                   href={item.route}
                 >
                   <span dangerouslySetInnerHTML={{ __html: item.icon }}></span>
@@ -131,10 +123,6 @@ export default function Sidebar() {
             ))}
           </ul>
         </nav>
-
-        <div className="flex justify-center h-screen">
-          <button onClick={logoutHandle}>Sign Out</button>
-        </div>
       </div>
     </>
   );

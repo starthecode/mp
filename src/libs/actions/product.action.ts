@@ -17,14 +17,44 @@ export const createProduct = async (data: AddProductParams) => {
   }
 };
 
-export const getProducts = async () => {
+export const getProducts = async (
+  postsPerPage: number,
+  categoryId: string,
+  page: any
+) => {
   try {
-    const products = await prisma.product.findMany({
-      include: {
-        category: true,
+    const [products, count] = await prisma.$transaction([
+      prisma.product.findMany({
+        where: {
+          categoryId,
+        },
+
+        skip: (page - 1) * postsPerPage,
+        take: postsPerPage,
+
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          title: true,
+          imageUrl: true,
+          isFree: true,
+          price: true,
+          category: true,
+        },
+      }),
+      prisma.product.count({
+        where: {
+          categoryId,
+        },
+      }),
+    ]);
+
+    return {
+      pagination: {
+        total: count,
       },
-    });
-    return JSON.parse(JSON.stringify(products));
+      data: products,
+    };
   } catch (error) {
     console.error('Error:', error);
   }

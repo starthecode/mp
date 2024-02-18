@@ -32,3 +32,17 @@ export const getCategories = async () => {
     throw error;
   }
 };
+
+//Get Single Category
+export const getCategory = async (name: string) => {
+  try {
+    const category = await prisma.category.findFirst({
+      where: {
+        name,
+      },
+    });
+    return JSON.parse(JSON.stringify(category));
+  } catch (error) {
+    throw error;
+  }
+};

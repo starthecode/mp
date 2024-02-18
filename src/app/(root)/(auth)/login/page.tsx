@@ -35,6 +35,7 @@ export default function Login() {
             <div className="p-4 sm:p-7">
               <div className="text-center justify-center flex flex-col items-center">
                 <Image
+                priority
                   className="mb-4"
                   src="/assets/imgs/application-logo.png"
                   width={50}

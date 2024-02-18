@@ -1,3 +1,5 @@
+import { UserSessionParams } from '@/types';
+
 export function formatDate(input: string | number): string {
   const date = new Date(input);
   return date.toLocaleDateString('en-US', {
@@ -38,7 +40,7 @@ export const handleError = (error: unknown) => {
 export function genDownloadUrl(url: string) {
   if (url) {
     const anchor = document.createElement('a');
-    anchor.href = url;
+    anchor.href = `/assets/product/downloads/${url}`;
     anchor.download = ''; // Optional: set the default download filename
     document.body.appendChild(anchor);
     anchor.click();
@@ -49,3 +51,7 @@ export function genDownloadUrl(url: string) {
 export function setPathName(pathName: string) {
   window.localStorage.setItem('path', pathName);
 }
+
+export const isAdmin = (user: UserSessionParams): boolean => {
+  return user?.roles?.includes('admin');
+};

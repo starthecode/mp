@@ -23,16 +23,22 @@ export default function ShopSidebar({ extraDetails }: ShopSidebarProps) {
     userId: session?.user.id || '',
     productId: extraDetails?.id,
     totalAmount: extraDetails?.price ? extraDetails?.price : 'free',
+    status: extraDetails?.price ? '' : 'completed',
   };
 
   React.useEffect(() => {
     const fetchOrderData = async () => {
-      const data = await getOrder(order);
-      setOrderData(data);
+      if (session?.user?.id) {
+        const data = await getOrder(order);
+        setOrderData(data);
+      }
     };
 
     fetchOrderData();
-  }, [extraDetails?.id]);
+
+    fetchOrderData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session, extraDetails?.id]);
 
   async function handleOrder() {
     setDownloadStart(true);
@@ -57,10 +63,6 @@ export default function ShopSidebar({ extraDetails }: ShopSidebarProps) {
   }
 
   const downloadText = downloadStart ? 'Please Wait' : 'Download Free';
-
-  if (!session) {
-    return;
-  }
 
   return (
     <div className="lg:col-span-1 lg:w-full lg:h-full lg:bg-gradient-to-r lg:from-gray-50 lg:via-transparent lg:to-transparent dark:from-slate-800">
@@ -111,8 +113,10 @@ export default function ShopSidebar({ extraDetails }: ShopSidebarProps) {
                   <Checkout
                     pathName={pathName}
                     transactionId={orderData?.transactionId}
+                    status={orderData?.status}
                     product={extraDetails}
                     userId={session?.user?.id as string}
+                    userEmail={session?.user?.email as string}
                   />
                 )}
               </div>

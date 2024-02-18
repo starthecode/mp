@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { userDefaultValues } from '@/constants';
-import { userFormSchema } from '@/libs/validator';
+import { userAccountSchema, userFormSchema } from '@/libs/validator';
 import { useRouter } from 'next/navigation';
 import { IUser } from '@/types';
 import toast from 'react-hot-toast';
@@ -33,7 +33,7 @@ type UserFormProps = {
   user: IUser;
 };
 
-type UserData = z.infer<typeof userFormSchema>;
+type UserData = z.infer<typeof userAccountSchema>;
 
 export default function UserForm({ type, user, userId }: UserFormProps) {
   const router = useRouter();
@@ -45,14 +45,12 @@ export default function UserForm({ type, user, userId }: UserFormProps) {
         }
       : userDefaultValues;
   const {
-    register,
     control,
-    setValue,
     reset,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<UserData>({
-    resolver: zodResolver(userFormSchema),
+    resolver: zodResolver(userAccountSchema),
     defaultValues: initialValues,
   });
 

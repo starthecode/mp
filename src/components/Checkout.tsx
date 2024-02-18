@@ -2,37 +2,44 @@ import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 
 import { IProduct } from '@/types';
-import { checkoutOrder } from '@/libs/actions/order.action';
+
 import { genDownloadUrl, setPathName } from '@/libs/utils';
+import { checkoutOrder } from '@/libs/actions/checkout.action';
 
 export default function Checkout({
   pathName,
   transactionId,
+  status,
   product,
   userId,
+  userEmail,
 }: {
   pathName: string;
   transactionId: string | undefined | null;
+  status: string;
   product: IProduct;
   userId: string;
+  userEmail: string;
 }) {
   loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
   const [clientSecret, setClientSecret] = React.useState('');
 
-  const buttonText = transactionId ? 'Download' : 'Buy & Download';
+  const buttonText =
+    transactionId && status == 'complete' ? 'Download' : 'Buy & Download';
 
   const onCheckout = async () => {
-    if (transactionId) {
+    if (transactionId && status == 'complete') {
       genDownloadUrl(product?.downloadLink);
     } else {
       setPathName(pathName); //set pathname in localstorage
-
       const order = {
         productTitle: product.title,
         productId: product.id,
         price: product?.price as string,
         isFree: product.isFree,
-        buyerId: userId,
+        userId,
+        userEmail: userEmail,
+        productImg: product?.imageUrl,
       };
       await checkoutOrder(order);
     }
