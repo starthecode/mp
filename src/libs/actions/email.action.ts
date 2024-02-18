@@ -2,7 +2,7 @@
 
 import { OrderReceiptEmail } from '@/components/mails/templates/email-order-template';
 import { EmailTemplate } from '@/components/mails/templates/email-template';
-import { EmailParams } from '@/types';
+import { EmailHelpParams, EmailParams } from '@/types';
 import { Resend } from 'resend';
 import { getProductById } from './product.action';
 import EmailAdminTemplate from '@/components/mails/templates/email-admin-order';
@@ -14,16 +14,7 @@ export const sendEmail = async (type: string, data: EmailParams) => {
   let mailSubject = '';
   let productDetails = null;
   try {
-    if (type == 'help') {
-      mailSubject = data.subject;
-
-      emailData = await resend.emails.send({
-        from: 'Experimental Code <info@experimentalapp.xyz>',
-        to: ['starthecode@gmail.com'],
-        subject: mailSubject,
-        react: EmailTemplate({ data }) as React.ReactElement,
-      });
-    } else if (type == 'NewOrder') {
+    if (type == 'NewOrder') {
       productDetails = await getProductById(data.productId as string);
 
       mailSubject = `Order Details - ${productDetails?.title}`;
@@ -48,15 +39,21 @@ export const sendEmail = async (type: string, data: EmailParams) => {
       });
     }
 
-    // const emailData = await resend.emails.send({
-    //   from: 'Experimental Code <onboarding@resend.dev>',
-    //   to: ['starthecode@gmail.com'],
-    //   subject: mailSubject,
-    //   react:
-    //     type == 'help'
-    //       ? (EmailTemplate({ data }) as React.ReactElement)
-    //       : (OrderReceiptEmail({ data, productDetails }) as React.ReactElement),
-    // });
+    return JSON.parse(JSON.stringify(emailData));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendHelpEmail = async (data: EmailHelpParams) => {
+  try {
+    const mailSubject = data.subject;
+    const emailData = await resend.emails.send({
+      from: 'Experimental Code <info@experimentalapp.xyz>',
+      to: ['starthecode@gmail.com'],
+      subject: mailSubject,
+      react: EmailTemplate({ data }) as React.ReactElement,
+    });
 
     return JSON.parse(JSON.stringify(emailData));
   } catch (error) {

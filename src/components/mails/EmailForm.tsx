@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import toast from 'react-hot-toast';
 import { emailSchema } from '@/libs/validator';
-import { sendEmail } from '@/libs/actions/email.action';
+import { sendHelpEmail } from '@/libs/actions/email.action';
 import Loader from '../Loader';
 
 type EmailData = z.infer<typeof emailSchema>;
@@ -32,9 +32,7 @@ export default function EmailForm({ session }: any) {
   async function onSubmit(data: EmailData) {
     setIsLoading(true);
 
-    const type = 'help';
-
-    const mailSent = await sendEmail(type, data);
+    const mailSent = await sendHelpEmail(data);
 
     if (mailSent) {
       reset();

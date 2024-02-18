@@ -1,9 +1,9 @@
-import { EmailParams } from '@/types';
+import { EmailHelpParams } from '@/types';
 import Image from 'next/image';
 import * as React from 'react';
 
 interface EmailTemplateProps {
-  data: EmailParams;
+  data: EmailHelpParams;
 }
 
 export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({

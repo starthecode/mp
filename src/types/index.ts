@@ -136,6 +136,11 @@ export type EmailParams = {
   status: string | undefined;
   email: string | null | undefined;
   subject: string;
+};
+
+export type EmailHelpParams = {
+  email: string | null | undefined;
+  subject: string;
   message: string;
 };
 
