@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-const MAX_FILE_SIZE = 2000000;
+const MAX_FILE_SIZE = 367001600;
 const ACCEPTED_FILE_TYPES = ['application/zip'];
 
 export const productFormSchema = z.object({
@@ -21,7 +21,7 @@ export const productFormSchema = z.object({
       message: 'imageUrl is required and must be a File',
     })
     .refine((file) => (file ? true : false), 'Download file required.')
-    .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 2MB.`)
+    .refine((file) => file?.size <= MAX_FILE_SIZE, `Max file size is 350MB.`)
     .refine(
       (file) => (file ? ACCEPTED_FILE_TYPES.includes(file.type) : true),
       'Only .zip format supported.'
